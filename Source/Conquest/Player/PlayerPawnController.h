@@ -15,5 +15,13 @@ class CONQUEST_API APlayerPawnController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	virtual void BeginPlay() override;	
+	virtual void BeginPlay() override;
+	void MovePawnTo(const FVector& Vector);
+
+
+	UPROPERTY(EditAnywhere, Category="Pawn")
+	TSubclassOf<class APawnBase>	PawnBluePrintClass;
+
+	class APawnBase	*Pawn;
+
 };

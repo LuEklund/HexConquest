@@ -32,6 +32,7 @@ public:
 	float		Speed = 250.f;
 
 
+
 	//============[Enhanced Input]======================================
 
 	void	EnhancedInputZoom(const struct FInputActionValue& value);
