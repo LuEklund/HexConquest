@@ -17,6 +17,7 @@ class CONQUEST_API APlayerPawnController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	void MovePawnTo(const FVector& Vector);
+	void CreatePawn(const FVector& Vector);
 
 
 	UPROPERTY(EditAnywhere, Category="Pawn")

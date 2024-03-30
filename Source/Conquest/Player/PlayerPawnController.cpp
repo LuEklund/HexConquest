@@ -11,9 +11,21 @@ void APlayerPawnController::BeginPlay()
 	bEnableMouseOverEvents = true;
 	bEnableClickEvents = true;
 
+	
+	// ATile* TileActor = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, Loc, FRotator::ZeroRotator));
+
+}
+
+void APlayerPawnController::MovePawnTo(const FVector& Vector)
+{
+	Pawn->SetActorLocation(Vector);
+}
+
+void APlayerPawnController::CreatePawn(const FVector& Vector)
+{
 	if (!PawnBluePrintClass)
 	{
-		UE_LOG(LogTemp, Display, TEXT("========================================\nNo BP Tile class in HexMap\n========================================================="));
+		UE_LOG(LogTemp, Error, TEXT("========================================\nNo BP Tile class in PlayerPawnController\n========================================================="));
 		return ;
 	}
 	FVector	Loc(0.f, 0.f, 200.f);
@@ -32,11 +44,5 @@ void APlayerPawnController::BeginPlay()
 		UE_LOG(LogTemp, Display, TEXT("HAPYYYYYYYYYYYYYYYYYYYYYYYYYY"));
 
 	}
-	// ATile* TileActor = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, Loc, FRotator::ZeroRotator));
-
-}
-
-void APlayerPawnController::MovePawnTo(const FVector& Vector)
-{
-	Pawn->SetActorLocation(Vector);
+	MovePawnTo(Vector);
 }

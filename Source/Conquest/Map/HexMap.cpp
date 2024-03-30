@@ -23,7 +23,7 @@ void UHexMap::InitMap()
 {
 	if (!TileBluePrintClass)
 	{
-		UE_LOG(LogTemp, Display, TEXT("No BP Tile class in HexMap"));
+		UE_LOG(LogTemp, Error, TEXT("No BP Tile class in HexMap2"));
 		return ;
 	}
 	Map.SetNum(10);
