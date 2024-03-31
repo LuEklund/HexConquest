@@ -96,7 +96,6 @@ void APlayerPawn::EnhancedInputMove(const FInputActionValue& value)
 	//create our delta position to add
 	float	dt = UGameplayStatics::GetWorldDeltaSeconds(this->GetWorld());
 	FVector	DeltaPos(moveVector.X * dt * Speed, moveVector.Y * dt * Speed, 0);
-	
 	AddActorLocalOffset(DeltaPos, true);
 }
 

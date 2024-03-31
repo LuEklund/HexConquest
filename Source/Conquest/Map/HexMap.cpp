@@ -21,11 +21,19 @@ UHexMap::UHexMap()
 
 void UHexMap::InitMap()
 {
+
 	if (!TileBluePrintClass)
 	{
 		UE_LOG(LogTemp, Error, TEXT("No BP Tile class in HexMap2"));
 		return ;
 	}
+	//Get a Tiles width to use as sapwn location
+	ATile* TmpTile = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, FVector(0.f,0.f, 1000.f), FRotator::ZeroRotator));
+	FVector Min, Max;
+	TmpTile->Tile->GetLocalBounds(Min, Max);
+	float	TileWidth = Max.X - Min.X;
+
+	//Start creating tiles
 	Map.SetNum(10);
 	for (int32 y = 0; y < Map.Num(); ++y)
 	{
@@ -35,13 +43,13 @@ void UHexMap::InitMap()
 			FVector	Loc(0.f,0.f,5.f);
 			if (y % 2 == 0)
 			{
-				Loc.X = x * 173.205078f + 173.205078f / 2;
-				Loc.Y = y * 0.75f * 173.205078f;
+				Loc.X = x * TileWidth + TileWidth / 2.f;
+				Loc.Y = y * 0.82f * TileWidth;
 			}
 			else
 			{
-				Loc.X = x * 173.205078f;
-				Loc.Y = y * 0.75f * 173.205078f;
+				Loc.X = x * TileWidth;
+				Loc.Y = y * 0.82f * TileWidth;
 			}
 			ATile* TileActor = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, Loc, FRotator::ZeroRotator));
 			// FVector Min, Max;

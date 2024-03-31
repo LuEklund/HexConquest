@@ -15,6 +15,14 @@ public:
 	// Sets default values for this actor's properties
 	ATile();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
+	virtual void NotifyActorBeginCursorOver() override;
+	virtual void NotifyActorEndCursorOver() override;
+
+	bool	bIsEnemy = true;
+	
 	UPROPERTY(EditAnywhere, Category="Base")
 	UStaticMeshComponent	*Tile;
 
@@ -22,10 +30,4 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
-	virtual void NotifyActorBeginCursorOver() override;
-	virtual void NotifyActorEndCursorOver() override;
 };

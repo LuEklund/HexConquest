@@ -23,6 +23,8 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Map")
 	TSubclassOf<class UHexMap>	ClassHexMap;
-	
+
+	UPROPERTY()
 	class UHexMap	*HexMap;
+
 };

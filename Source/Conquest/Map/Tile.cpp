@@ -11,14 +11,13 @@ ATile::ATile()
 	PrimaryActorTick.bCanEverTick = true;
 	Tile = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Tile"));
 	SetRootComponent(Tile);
-
+	
 }
 
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -32,21 +31,31 @@ void ATile::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	Super::NotifyActorOnClicked(ButtonPressed);
 	APlayerPawnController *PlayerController = Cast<APlayerPawnController>(GetWorld()->GetFirstPlayerController());
-	PlayerController->MovePawnTo(GetActorLocation());
+	if (bIsEnemy)
+	{
+		//Ask to fight
+		PlayerController->PromptToFight(GetActorLocation());
+		//ButtonPressed(true);
+		//yes -> Fight -> Move if Victory
+		//NO -> dont move
+	}
+	else
+	{
+		PlayerController->MovePawnTo(GetActorLocation());
+		
+	}
 	UE_LOG(LogTemp, Display, TEXT("Pressed"));
 }
 
 void ATile::NotifyActorBeginCursorOver()
 {
 	Super::NotifyActorBeginCursorOver();
-	UE_LOG(LogTemp, Display, TEXT("BEGIN HOVER"));
 
 }
 
 void ATile::NotifyActorEndCursorOver()
 {
 	Super::NotifyActorEndCursorOver();
-	UE_LOG(LogTemp, Display, TEXT("END Hover"));
 
 }
 
