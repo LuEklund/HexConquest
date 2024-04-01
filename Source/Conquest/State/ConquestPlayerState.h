@@ -14,6 +14,6 @@ class CONQUEST_API AConquestPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, Category="Troops")
-	int8		TroopsAmount = 8;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Troops")
+	int32		TroopsAmount = 8;
 };

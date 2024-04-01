@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	ABaseSoldier();
 
+	UPROPERTY(EditAnywhere, Category="Base");
+	class UCapsuleComponent	*CapsuleComponent;
+
+	UPROPERTY(EditAnywhere, Category="Sprite")
+	class UPaperFlipbookComponent	*PaperFlipbookComponent;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

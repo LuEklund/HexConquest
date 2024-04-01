@@ -21,8 +21,14 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Widget")
 	TSubclassOf<UUserWidget>	WidgetClass;
+
+	UPROPERTY(EditAnywhere, Category="Widget")
+	TSubclassOf<UUserWidget>	WidgetHUDClass;
 	
 	UPROPERTY()
 	UUserWidget	*PromptWidget;
+
+	UPROPERTY()
+	UUserWidget	*HUDWidget;
 
 };

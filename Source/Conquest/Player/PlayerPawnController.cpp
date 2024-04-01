@@ -12,6 +12,16 @@ void APlayerPawnController::BeginPlay()
 	bEnableMouseOverEvents = true;
 	bEnableClickEvents = true;
 
+	if (WidgetHUDClass)
+	{
+		HUDWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetHUDClass);
+		HUDWidget->AddToViewport();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("========================================\nNo BP WIDGET class in APlayerPawnController\n========================================================="));
+	}
+
 }
 
 

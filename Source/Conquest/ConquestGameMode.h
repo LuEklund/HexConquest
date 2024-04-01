@@ -28,6 +28,8 @@ public:
 	UPROPERTY()
 	class AConquestGameState *ConquestGameState;
 	UPROPERTY()
+	class AConquestPlayerState *ConquestPlayerState;
+	UPROPERTY()
 	class APlayerPawnController	*Controller;
 
 

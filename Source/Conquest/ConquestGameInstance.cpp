@@ -10,11 +10,16 @@
 #include "Map/Tile.h"
 #include "Pawns/PawnBase.h"
 #include "Player/FightPlayerController.h"
+#include "State/ConquestPlayerState.h"
 
 void UConquestGameInstance::MapTransition(const FName MapName)
 {
 	if (AConquestGameMode *GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode()))
 	{
+		//Player stats
+		PlayerTroops = GameMode->ConquestPlayerState->TroopsAmount;
+		
+		//Important tiles
 		TryToMoveToTile = GameMode->ConquestGameState->TryToMoveToTile;
 		CurrentPlayerPos = GameMode->ConquestGameState->CurrentPlayerTilePos;
 

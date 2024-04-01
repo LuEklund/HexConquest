@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Map/Tile.h"
 #include "Player/PlayerPawnController.h"
+#include "State/ConquestPlayerState.h"
 
 
 void AConquestGameMode::BeginPlay()
@@ -15,7 +16,8 @@ void AConquestGameMode::BeginPlay()
 	Super::BeginPlay();
 	GameInstance = Cast<UConquestGameInstance>(GetGameInstance());
 	ConquestGameState = Cast<AConquestGameState>(GetGameState<AConquestGameState>());
-	if(!ConquestGameState)
+	Controller = Cast<APlayerPawnController>(GetWorld()->GetFirstPlayerController());
+	ConquestPlayerState = Cast<AConquestPlayerState>(Controller->GetPlayerState<AConquestPlayerState>());	if(!ConquestGameState)
 	{
 		UE_LOG(LogTemp, Error, TEXT("========================================\nAConquestGameMode: No Game State\n========================================================="));
 		return ;
@@ -33,7 +35,6 @@ void AConquestGameMode::BeginPlay()
 		//Put player pawn on the right spot
 		WonBattle(GameInstance->bWon);
 		//Move Camera to Player Pawn
-		Controller = Cast<APlayerPawnController>(GetWorld()->GetFirstPlayerController());
 		FVector	Loc(BoardPawn->GetActorLocation().X, BoardPawn->GetActorLocation().Y, Controller->GetPawn()->GetActorLocation().Z);
 		Controller->GetPawn()->SetActorLocation(Loc);
 		
