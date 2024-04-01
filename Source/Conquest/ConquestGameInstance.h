@@ -9,15 +9,32 @@
 /**
  * 
  */
+
+
+USTRUCT(Blueprintable)
+struct FTileData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FIntVector2	PositionInMap;
+
+	
+	
+	UPROPERTY()
+	bool		bEnemy;
+};
+
 UCLASS()
 class CONQUEST_API UConquestGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
 public:
-	// TArray<TArray<class >>
-	FVector	TempHexCords;
-	bool	bWon = false;
+	TArray<TArray<FTileData>>	HexMapData;
+	FTileData					TryToMoveToTile;
+	FTileData					CurrentPlayerPos;
+	bool						bWon = false;
 
 	int8	PlayerTroops = 0;
 

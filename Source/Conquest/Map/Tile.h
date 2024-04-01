@@ -21,10 +21,22 @@ public:
 	virtual void NotifyActorBeginCursorOver() override;
 	virtual void NotifyActorEndCursorOver() override;
 
-	bool	bIsEnemy = true;
+	void	Conqured(bool bWasPlayer);
+
+	bool		bIsEnemy = true;
+	FIntVector2	Pos;
 	
 	UPROPERTY(EditAnywhere, Category="Base")
 	UStaticMeshComponent	*Tile;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*FreeTileMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*YourTileMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*EnemyTileMaterial;
 
 protected:
 	// Called when the game starts or when spawned

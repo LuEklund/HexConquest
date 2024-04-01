@@ -15,11 +15,11 @@ class CONQUEST_API UHexMap : public UObject
 {
 	GENERATED_BODY()
 public:
-	UHexMap();
-	void	InitMap();
+	void	InitMap(const TArray<TArray<struct FTileData>> &HexMapData);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tile")
 	TSubclassOf<ATile>	TileBluePrintClass;
-	
+
+
 	TArray<TArray<class ATile *>> Map;
 };

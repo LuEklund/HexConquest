@@ -3,23 +3,9 @@
 
 #include "HexMap.h"
 #include "Tile.h"
+#include "../ConquestGameInstance.h"
 
-UHexMap::UHexMap()
-{
-	// Map.SetNum(10);
-	// for (int32 y = 0; y < Map.Num(); ++y)
-	// {
-	// 	Map[y].SetNum(10);
-	// 	for (int32 x = 0; x < Map[y].Num(); ++x)
-	// 	{
-	// 		UE_LOG(LogTemp, Display, TEXT("created: Y: %d, X: %d"), y, x);
-	// 		AActor* TileActor = GetWorld()->SpawnActor<ATile>(ATile::StaticClass());
-	// 		//Map[y][x] = Cast<ATile>(TileActor);
-	// 	}
-	// }
-}
-
-void UHexMap::InitMap()
+void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
 {
 
 	if (!TileBluePrintClass)
@@ -52,6 +38,12 @@ void UHexMap::InitMap()
 				Loc.Y = y * 0.82f * TileWidth;
 			}
 			ATile* TileActor = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, Loc, FRotator::ZeroRotator));
+			if(HexMapData.Num() && !HexMapData[y][x].bEnemy)
+			{
+				TileActor->Conqured(true);
+			}
+			TileActor->Pos.Y = y;
+			TileActor->Pos.X = x;
 			// FVector Min, Max;
 			// TileActor->Tile->GetLocalBounds(Min, Max);
 			// UE_LOG(LogTemp, Display, TEXT("created: Y: %d, X: %d, WIDTH? %f"), y, x, Max.X - Min.X);

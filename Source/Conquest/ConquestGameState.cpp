@@ -3,40 +3,32 @@
 
 #include "ConquestGameState.h"
 
+#include "ConquestGameInstance.h"
 #include "Map/HexMap.h"
-#include "Player/PlayerPawnController.h"
+#include "Pawns/PawnBase.h"
 
-AConquestGameState::AConquestGameState()
+AActor	*AConquestGameState::GetTile(const FIntVector2	&Pos)
 {
+	AActor *myActor = Cast<AActor>(HexMap->Map[Pos.Y][Pos.X]);
+	if (myActor)
+	{
+		return (myActor);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("\n2=============================\nAConquestGameState: That actor does no exist\n2=================================="));
+		return (nullptr);
+	}
 }
 
-void AConquestGameState::BeginPlay()
+void AConquestGameState::SetupHexMap(const TArray<TArray<FTileData>> &HexMapData)
 {
-	Super::BeginPlay();
 	if (ClassHexMap)
 	{
 		HexMap = NewObject<UHexMap>(this, ClassHexMap);
 		if (HexMap)
 		{
-			HexMap->InitMap();
-			AActor *myActor = Cast<AActor>(HexMap->Map[0][0]);
-			if (myActor)
-			{
-				FVector Location = myActor->GetActorLocation();
-				APlayerPawnController * PlayerPawnController = Cast<APlayerPawnController>(GetWorld()->GetFirstPlayerController());
-				if (PlayerPawnController)
-				{
-					PlayerPawnController->CreatePawn(Location);
-				}
-				else
-				{
-					UE_LOG(LogTemp, Error, TEXT("\n2=============================\nERROR in PlayerPawnControler in GameState\n2=================================="));
-				}
-			}
-			else
-			{
-				UE_LOG(LogTemp, Error, TEXT("\n2=============================\nSOmething wrong with saving pointer in map\n2=================================="));
-			}
+			HexMap->InitMap(HexMapData);
 		}
 		else
 		{
@@ -47,6 +39,30 @@ void AConquestGameState::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("0=============================\nFAILED TO CREATE HEXMAPn\n0=================================="));
 	}
-
-
 }
+
+void AConquestGameState::MovePawnTo(const FVector& Vector)
+{
+	PlayerPawn->SetActorLocation(Vector);
+}
+
+
+AActor *AConquestGameState::CreatePawn(const FVector& Vector)
+{
+	if (!PawnBluePrintClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("========================================\nNo BP Tile class in AConquestGameState\n========================================================="));
+		return (nullptr);
+	}
+	FVector	Loc(0.f, 0.f, 200.f);
+	AActor *test = GetWorld()->SpawnActor<APawnBase>(PawnBluePrintClass, Loc, FRotator::ZeroRotator);
+	if (!test)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AConquestGameState: PawnBluePrintClass"));
+	}
+	PlayerPawn = Cast<APawnBase>(test);
+	MovePawnTo(Vector);
+	return (PlayerPawn);
+}
+
+

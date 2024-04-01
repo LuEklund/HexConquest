@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "ConquestGameInstance.h"
 #include "ConquestGameState.generated.h"
 
 
@@ -15,16 +16,27 @@ class CONQUEST_API AConquestGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 public:
-	AConquestGameState();
+	
+	void	SetupHexMap(const TArray<TArray<struct FTileData>> &HexMapData);
+	AActor *CreatePawn(const FVector& Vector);
+	void	MovePawnTo(const FVector& Vector);
+	AActor	*GetTile(const FIntVector2	&Pos);
 
-protected:
-	virtual void BeginPlay() override;
-
-public:
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Map")
 	TSubclassOf<class UHexMap>	ClassHexMap;
-
 	UPROPERTY()
 	class UHexMap	*HexMap;
 
+
+	UPROPERTY(EditAnywhere, Category="Pawn")
+	TSubclassOf<class APawnBase>	PawnBluePrintClass;
+	UPROPERTY()
+	class APawnBase	*PlayerPawn;
+
+	UPROPERTY()
+	FTileData	TryToMoveToTile;
+
+	UPROPERTY()
+	FTileData	CurrentPlayerTilePos;
 };

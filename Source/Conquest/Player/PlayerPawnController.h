@@ -15,28 +15,9 @@ class CONQUEST_API APlayerPawnController : public APlayerController
 	GENERATED_BODY()
 
 public:
-
-	FVector	TempTileCord;
-	UPROPERTY(EditAnywhere, Category="Troops")
-	int8		TroopsAmount = 8;
-
 	virtual void BeginPlay() override;
-	void MovePawnTo(const FVector& Vector);
-	void CreatePawn(const FVector& Vector);
-	void PromptToFight(const FVector& Vector);
-	void	WonBattle(bool bVictory);
-	
-	UFUNCTION(BlueprintCallable, Category="Conflict")
-	void	HandleConflict(bool bFight);
+	void PromptToFight();
 
-	UPROPERTY(EditAnywhere, Category="Pawn")
-	TSubclassOf<class APawnBase>	PawnBluePrintClass;
-
-	UPROPERTY()
-	class APawnBase	*HexPawn;
-
-	UPROPERTY()
-	class UConquestGameInstance *GameInstance;
 
 	UPROPERTY(EditAnywhere, Category="Widget")
 	TSubclassOf<UUserWidget>	WidgetClass;

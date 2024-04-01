@@ -2,7 +2,7 @@
 
 
 #include "Tile.h"
-#include "../Player/PlayerPawnController.h"
+#include "../ConquestGameMode.h"
 
 // Sets default values
 ATile::ATile()
@@ -18,6 +18,14 @@ ATile::ATile()
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
+	if (bIsEnemy)
+	{
+		Tile->SetMaterial(0, EnemyTileMaterial);
+	}
+	else
+	{
+		Tile->SetMaterial(0, YourTileMaterial);
+	}
 }
 
 // Called every frame
@@ -30,19 +38,19 @@ void ATile::Tick(float DeltaTime)
 void ATile::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	Super::NotifyActorOnClicked(ButtonPressed);
-	APlayerPawnController *PlayerController = Cast<APlayerPawnController>(GetWorld()->GetFirstPlayerController());
+	
+	AConquestGameMode	*GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode());
 	if (bIsEnemy)
 	{
 		//Ask to fight
-		PlayerController->PromptToFight(GetActorLocation());
+		GameMode->PromptToFight(this);
 		//ButtonPressed(true);
 		//yes -> Fight -> Move if Victory
 		//NO -> dont move
 	}
 	else
 	{
-		PlayerController->MovePawnTo(GetActorLocation());
-		
+		GameMode->MovePawnTo(this);
 	}
 	UE_LOG(LogTemp, Display, TEXT("Pressed"));
 }
@@ -57,5 +65,18 @@ void ATile::NotifyActorEndCursorOver()
 {
 	Super::NotifyActorEndCursorOver();
 
+}
+
+void ATile::Conqured(bool bWasPlayer)
+{
+	if (bWasPlayer)
+	{
+		Tile->SetMaterial(0, YourTileMaterial);
+		bIsEnemy = false;
+	}
+	else
+	{
+		Tile->SetMaterial(0, EnemyTileMaterial);
+	}
 }
 

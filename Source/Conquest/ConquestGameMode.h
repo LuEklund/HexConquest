@@ -13,5 +13,24 @@ UCLASS()
 class CONQUEST_API AConquestGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	void	MovePawnTo(class ATile *HexTile);
+	void	WonBattle(bool bVictory);
 	
+	UFUNCTION(BlueprintCallable, Category="Conflict")
+	void	HandleConflict(bool bFight);
+
+	void PromptToFight(class ATile *HexTile);
+
+	
+	UPROPERTY()
+	class UConquestGameInstance *GameInstance;
+	UPROPERTY()
+	class AConquestGameState *ConquestGameState;
+	UPROPERTY()
+	class APlayerPawnController	*Controller;
+
+
+protected:
+	virtual void BeginPlay() override;
 };

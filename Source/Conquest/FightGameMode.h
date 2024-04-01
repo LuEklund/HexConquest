@@ -13,5 +13,5 @@ UCLASS()
 class CONQUEST_API AFightGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 };

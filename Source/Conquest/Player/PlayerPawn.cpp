@@ -85,7 +85,6 @@ void APlayerPawn::EnhancedInputZoom(const FInputActionValue& value)
 	float zoom = value.Get<float>();
 	float newDistance = FMath::Clamp(SpringArm->TargetArmLength - zoom * 10.f, 0.f, 1750.f);
 	SpringArm->TargetArmLength = newDistance;
-	UE_LOG(LogTemp, Display, TEXT("LOL %f, %f"), zoom, newDistance);
 }
 
 void APlayerPawn::EnhancedInputMove(const FInputActionValue& value)
