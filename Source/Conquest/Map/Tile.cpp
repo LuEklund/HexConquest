@@ -11,7 +11,7 @@ ATile::ATile()
 	PrimaryActorTick.bCanEverTick = true;
 	Tile = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Tile"));
 	SetRootComponent(Tile);
-	
+	DefaultOutline = Tile->GetMaterial(1);
 }
 
 // Called when the game starts or when spawned
@@ -42,28 +42,34 @@ void ATile::NotifyActorOnClicked(FKey ButtonPressed)
 	AConquestGameMode	*GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode());
 	if (bIsEnemy)
 	{
-		//Ask to fight
 		GameMode->PromptToFight(this);
-		//ButtonPressed(true);
-		//yes -> Fight -> Move if Victory
-		//NO -> dont move
 	}
 	else
 	{
 		GameMode->MovePawnTo(this);
+		GameMode->clearWidget();
 	}
-	UE_LOG(LogTemp, Display, TEXT("Pressed"));
+	Tile->SetMaterial(1,PressedOutline);
+
 }
 
 void ATile::NotifyActorBeginCursorOver()
 {
 	Super::NotifyActorBeginCursorOver();
+	if (Tile->GetMaterial(1) != PressedOutline)
+	{
+		Tile->SetMaterial(1,HoverOutline);
+	}
 
 }
 
 void ATile::NotifyActorEndCursorOver()
 {
 	Super::NotifyActorEndCursorOver();
+	if (Tile->GetMaterial(1) != PressedOutline)
+	{
+		Tile->SetMaterial(1, DefaultOutline);
+	}
 
 }
 
@@ -78,5 +84,12 @@ void ATile::Conqured(bool bWasPlayer)
 	{
 		Tile->SetMaterial(0, EnemyTileMaterial);
 	}
+}
+
+void ATile::ChangeMaterial()
+{
+	
+	Tile->SetMaterial(1,DefaultOutline);
+
 }
 

@@ -7,12 +7,12 @@
 #include "Map/HexMap.h"
 #include "Pawns/PawnBase.h"
 
-AActor	*AConquestGameState::GetTile(const FIntVector2	&Pos)
+ATile	*AConquestGameState::GetTile(const FIntVector2	&Pos)
 {
-	AActor *myActor = Cast<AActor>(HexMap->Map[Pos.Y][Pos.X]);
-	if (myActor)
+	ATile *MyTile = HexMap->Map[Pos.Y][Pos.X];
+	if (MyTile)
 	{
-		return (myActor);
+		return (MyTile);
 	}
 	else
 	{
@@ -61,7 +61,6 @@ AActor *AConquestGameState::CreatePawn(const FVector& Vector)
 		UE_LOG(LogTemp, Error, TEXT("AConquestGameState: PawnBluePrintClass"));
 	}
 	PlayerPawn = Cast<APawnBase>(test);
-	MovePawnTo(Vector);
 	return (PlayerPawn);
 }
 

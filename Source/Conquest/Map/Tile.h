@@ -22,6 +22,7 @@ public:
 	virtual void NotifyActorEndCursorOver() override;
 
 	void	Conqured(bool bWasPlayer);
+	void	ChangeMaterial();
 
 	bool		bIsEnemy = true;
 	FIntVector2	Pos;
@@ -37,6 +38,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
 	UMaterialInterface	*EnemyTileMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*HoverOutline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*PressedOutline;
+
+	UPROPERTY()
+	UMaterialInterface	*DefaultOutline;
+
 
 protected:
 	// Called when the game starts or when spawned

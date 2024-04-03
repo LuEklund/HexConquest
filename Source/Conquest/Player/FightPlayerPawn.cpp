@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Conquest/ConquestGameInstance.h"
+#include "Conquest/FightGameMode.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -75,7 +76,8 @@ void AFightPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AFightPlayerPawn::EnhancedInput(const FInputActionValue& Value)
 {
-	AFightPlayerController *PlayerController = Cast<AFightPlayerController>(Controller);
-	PlayerController->bWon = true;
-	PlayerController->GameInstance->MapTransition(FName("Default"));
+	float	Won = Value.Get<float>();
+	UE_LOG(LogTemp, Error, TEXT("AFightPlayerPawn: press %f"), Won);
+
+	Cast<AFightGameMode>(GetWorld()->GetAuthGameMode())->GameOver(Won > 0 ? true : false);
 }

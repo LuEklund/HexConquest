@@ -6,7 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 
 #include "Fighting/BaseSoldier.h"
-
 #include "FightGameMode.generated.h"
 
 /**
@@ -23,14 +22,25 @@ protected:
 public:
 	UPROPERTY()
 	class UConquestGameInstance *GameInstance;
-	// UPROPERTY()
-	// class AConquestGameState *FightGameState;
+	UPROPERTY()
+	class AFightGameState *FightGameState;
 	// UPROPERTY()
 	// class AConquestPlayerState *ConquestPlayerState;
 	UPROPERTY()
 	class AFightPlayerController	*Controller;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tile")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soliders")
 	TSubclassOf<ABaseSoldier>	SoldierClass;
 	TArray<ABaseSoldier*>		Soldiers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soliders")
+	TSubclassOf<ABaseSoldier>	EnenmySoldierClass;
+	TArray<ABaseSoldier*>		EnemySoldiers;
+
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	void	MeeleAttack(bool	isPlayer);
+
+	void	ActorDied(AActor *Actor);
+
+	void	GameOver(bool Victiry);
 };

@@ -18,9 +18,12 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-
-	bool	bWon = false;
-	
 	UPROPERTY()
 	class UConquestGameInstance *GameInstance;
+
+	UPROPERTY(EditAnywhere, Category="Widget")
+	TSubclassOf<UUserWidget>	FightHudClass;
+	
+	UPROPERTY()
+	UUserWidget	*FightHUD;
 };

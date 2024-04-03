@@ -5,33 +5,40 @@
 
 #include "ConquestGameMode.h"
 #include "ConquestGameState.h"
+#include "FightGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Map/HexMap.h"
 #include "Map/Tile.h"
-#include "Pawns/PawnBase.h"
-#include "Player/FightPlayerController.h"
 #include "State/ConquestPlayerState.h"
+#include "State/FightGameState.h"
+
+UConquestGameInstance::UConquestGameInstance()
+{
+	PlayerBaseTile.PositionInMap	= FIntVector2(0,0);
+	PlayerBaseTile.bEnemy			= false;
+	CurrentPlayerPos				= PlayerBaseTile;
+}
 
 void UConquestGameInstance::MapTransition(const FName MapName)
 {
-	if (AConquestGameMode *GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode()))
+	if (AConquestGameMode *GameModeConquest = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode()))
 	{
 		//Player stats
-		PlayerTroops = GameMode->ConquestPlayerState->TroopsAmount;
+		PlayerTroops = GameModeConquest->ConquestPlayerState->TroopsAmount;
 		
 		//Important tiles
-		TryToMoveToTile = GameMode->ConquestGameState->TryToMoveToTile;
-		CurrentPlayerPos = GameMode->ConquestGameState->CurrentPlayerTilePos;
+		TryToMoveToTile = GameModeConquest->ConquestGameState->TryToMoveToTile;
+		CurrentPlayerPos = GameModeConquest->ConquestGameState->CurrentPlayerTilePos;
 
 		//save map information
-		HexMapData.SetNum(GameMode->ConquestGameState->HexMap->Map.Num());
-		for(int32 y = 0; y < GameMode->ConquestGameState->HexMap->Map.Num(); ++y)
+		HexMapData.SetNum(GameModeConquest->ConquestGameState->HexMap->Map.Num());
+		for(int32 y = 0; y < GameModeConquest->ConquestGameState->HexMap->Map.Num(); ++y)
 		{
-			for (int32 x = 0;  x < GameMode->ConquestGameState->HexMap->Map[y].Num(); ++x)
+			for (int32 x = 0;  x < GameModeConquest->ConquestGameState->HexMap->Map[y].Num(); ++x)
 			{
-				HexMapData[y].SetNum(GameMode->ConquestGameState->HexMap->Map[y].Num());
-				HexMapData[y][x].PositionInMap = GameMode->ConquestGameState->HexMap->Map[y][x]->Pos;
-				HexMapData[y][x].bEnemy = GameMode->ConquestGameState->HexMap->Map[y][x]->bIsEnemy;
+				HexMapData[y].SetNum(GameModeConquest->ConquestGameState->HexMap->Map[y].Num());
+				HexMapData[y][x].PositionInMap = GameModeConquest->ConquestGameState->HexMap->Map[y][x]->Pos;
+				HexMapData[y][x].bEnemy = GameModeConquest->ConquestGameState->HexMap->Map[y][x]->bIsEnemy;
 				if (!HexMapData[y][x].bEnemy)
 				{
 					UE_LOG(LogTemp, Error, TEXT("TILE IS FRIENDLY SAVE"));
@@ -40,14 +47,10 @@ void UConquestGameInstance::MapTransition(const FName MapName)
 		}
 		
 	}
-	else if (AFightPlayerController *FightPlayerController = Cast<AFightPlayerController>(GetFirstLocalPlayerController(GetWorld())))
+	else if(AFightGameMode *GameModeFight = Cast<AFightGameMode>(GetWorld()->GetAuthGameMode()))
 	{
-		bWon = FightPlayerController->bWon;
+		bWon = GameModeFight->FightGameState->bWon;
 	}
+	
 	UGameplayStatics::OpenLevel(GetWorld(), MapName);
-	// if (APlayerPawnController *PlayerPawnController = Cast<APlayerPawnController>(GetFirstLocalPlayerController(GetWorld())))
-	// {
-	// 	// TempHexCords = PlayerPawnController->TempTileCord;
-	// 	// PlayerTroops = PlayerPawnController->TroopsAmount;
-	// }
 }

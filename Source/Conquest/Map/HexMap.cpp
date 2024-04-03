@@ -13,6 +13,7 @@ void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
 		UE_LOG(LogTemp, Error, TEXT("No BP Tile class in HexMap2"));
 		return ;
 	}
+
 	//Get a Tiles width to use as sapwn location
 	ATile* TmpTile = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, FVector(0.f,0.f, 1000.f), FRotator::ZeroRotator));
 	FVector Min, Max;
@@ -44,9 +45,6 @@ void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
 			}
 			TileActor->Pos.Y = y;
 			TileActor->Pos.X = x;
-			// FVector Min, Max;
-			// TileActor->Tile->GetLocalBounds(Min, Max);
-			// UE_LOG(LogTemp, Display, TEXT("created: Y: %d, X: %d, WIDTH? %f"), y, x, Max.X - Min.X);
 			Map[y][x] = TileActor;
 		}
 	}

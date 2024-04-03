@@ -18,8 +18,6 @@ struct FTileData
 
 	UPROPERTY()
 	FIntVector2	PositionInMap;
-
-	
 	
 	UPROPERTY()
 	bool		bEnemy;
@@ -31,9 +29,13 @@ class CONQUEST_API UConquestGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
+
+	UConquestGameInstance();
+	
 	TArray<TArray<FTileData>>	HexMapData;
 	FTileData					TryToMoveToTile;
 	FTileData					CurrentPlayerPos;
+	FTileData					PlayerBaseTile;
 	bool						bWon = false;
 
 	int8	PlayerTroops = 0;

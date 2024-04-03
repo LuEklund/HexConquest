@@ -21,6 +21,7 @@ public:
 	void	HandleConflict(bool bFight);
 
 	void PromptToFight(class ATile *HexTile);
+	void clearWidget();
 
 	
 	UPROPERTY()

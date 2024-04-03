@@ -30,8 +30,11 @@ void AConquestGameMode::BeginPlay()
 		
 		//Setup The map
 		ConquestGameState->SetupHexMap(GameInstance->HexMapData);
+		//Convert player tile to owning
+		ConquestGameState->GetTile(GameInstance->PlayerBaseTile.PositionInMap)->Conqured(true);
 		//Create Player pawn
-		AActor *BoardPawn = ConquestGameState->CreatePawn(ConquestGameState->GetTile(GameInstance->CurrentPlayerPos.PositionInMap)->GetActorLocation());
+		AActor *BoardPawn = ConquestGameState->CreatePawn(ConquestGameState->GetTile(GameInstance->PlayerBaseTile.PositionInMap)->GetActorLocation());
+		MovePawnTo(Cast<ATile>(ConquestGameState->GetTile(GameInstance->CurrentPlayerPos.PositionInMap)));
 		//Put player pawn on the right spot
 		WonBattle(GameInstance->bWon);
 		//Move Camera to Player Pawn
@@ -48,6 +51,9 @@ void AConquestGameMode::BeginPlay()
 
 void AConquestGameMode::MovePawnTo(ATile *HexTile)
 {
+	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterial();
+	ConquestGameState->TryToMoveToTile.PositionInMap = HexTile->Pos;
+	ConquestGameState->TryToMoveToTile.bEnemy = HexTile->bIsEnemy;
 	ConquestGameState->CurrentPlayerTilePos.PositionInMap = HexTile->Pos;
 	ConquestGameState->CurrentPlayerTilePos.bEnemy = HexTile->bIsEnemy;
 	ConquestGameState->MovePawnTo(HexTile->GetActorLocation());
@@ -59,11 +65,19 @@ void AConquestGameMode::MovePawnTo(ATile *HexTile)
 void AConquestGameMode::PromptToFight(ATile *HexTile)
 {
 	//save where to move stats.
+	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterial();
 	ConquestGameState->TryToMoveToTile.PositionInMap = HexTile->Pos;
 	ConquestGameState->TryToMoveToTile.bEnemy = HexTile->bIsEnemy;
 	Controller->PromptToFight();
 }
 
+void AConquestGameMode::clearWidget()
+{
+	if (Controller->PromptWidget && Controller->PromptWidget->IsInViewport())
+	{
+		Controller->PromptWidget->RemoveFromParent();
+	}
+}
 
 
 void AConquestGameMode::HandleConflict(bool bFight)
