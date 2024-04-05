@@ -16,4 +16,6 @@ class CONQUEST_API AConquestPlayerState : public APlayerState
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Troops")
 	int32		TroopsAmount = 8;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Troops")
+	int32		Gold = 200;
 };

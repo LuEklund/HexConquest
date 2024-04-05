@@ -17,6 +17,7 @@ class CONQUEST_API APlayerPawnController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	void PromptToFight();
+	void TogglePlayerTurn(bool bCanPlay);
 
 
 	UPROPERTY(EditAnywhere, Category="Widget")

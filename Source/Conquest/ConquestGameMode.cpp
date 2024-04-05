@@ -5,6 +5,7 @@
 
 #include "ConquestGameInstance.h"
 #include "ConquestGameState.h"
+#include "AI/AIControllerHexConquest.h"
 #include "Blueprint/UserWidget.h"
 #include "Map/Tile.h"
 #include "Player/PlayerPawnController.h"
@@ -29,7 +30,7 @@ void AConquestGameMode::BeginPlay()
 		// TroopsAmount = GameInstance->PlayerTroops;
 		
 		//Setup The map
-		ConquestGameState->SetupHexMap(GameInstance->HexMapData);
+		ConquestGameState->SetupHexMap(GameInstance->HexMapData, GameInstance->WorldSize);
 		//Convert player tile to owning
 		ConquestGameState->GetTile(GameInstance->PlayerBaseTile.PositionInMap)->Conqured(true);
 		//Create Player pawn
@@ -40,6 +41,9 @@ void AConquestGameMode::BeginPlay()
 		//Move Camera to Player Pawn
 		FVector	Loc(BoardPawn->GetActorLocation().X, BoardPawn->GetActorLocation().Y, Controller->GetPawn()->GetActorLocation().Z);
 		Controller->GetPawn()->SetActorLocation(Loc);
+
+		//Create AI
+		ConquestGameState->CreateAIPawn(ConquestGameState->GetTile(GameInstance->CurrentAITile.PositionInMap)->GetActorLocation());
 		
 	}
 	else
@@ -51,13 +55,12 @@ void AConquestGameMode::BeginPlay()
 
 void AConquestGameMode::MovePawnTo(ATile *HexTile)
 {
-	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterial();
+	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterialEdge(0);
 	ConquestGameState->TryToMoveToTile.PositionInMap = HexTile->Pos;
-	ConquestGameState->TryToMoveToTile.bEnemy = HexTile->bIsEnemy;
+	ConquestGameState->TryToMoveToTile.TileOwner = HexTile->TileOwner;
 	ConquestGameState->CurrentPlayerTilePos.PositionInMap = HexTile->Pos;
-	ConquestGameState->CurrentPlayerTilePos.bEnemy = HexTile->bIsEnemy;
+	ConquestGameState->CurrentPlayerTilePos.TileOwner = HexTile->TileOwner;
 	ConquestGameState->MovePawnTo(HexTile->GetActorLocation());
-
 }
 
 
@@ -65,9 +68,9 @@ void AConquestGameMode::MovePawnTo(ATile *HexTile)
 void AConquestGameMode::PromptToFight(ATile *HexTile)
 {
 	//save where to move stats.
-	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterial();
+	ConquestGameState->GetTile(ConquestGameState->TryToMoveToTile.PositionInMap)->ChangeMaterialEdge(0);
 	ConquestGameState->TryToMoveToTile.PositionInMap = HexTile->Pos;
-	ConquestGameState->TryToMoveToTile.bEnemy = HexTile->bIsEnemy;
+	ConquestGameState->TryToMoveToTile.TileOwner = HexTile->TileOwner;
 	Controller->PromptToFight();
 }
 
@@ -115,6 +118,11 @@ void	AConquestGameMode::WonBattle(bool bVictory)
 	{
 		MovePawnTo(Cast<ATile>(ConquestGameState->GetTile(GameInstance->CurrentPlayerPos.PositionInMap)));
 	}
+}
+
+void AConquestGameMode::AITurn()
+{
+	
 }
 
 

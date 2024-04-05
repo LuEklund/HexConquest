@@ -15,8 +15,12 @@
 UConquestGameInstance::UConquestGameInstance()
 {
 	PlayerBaseTile.PositionInMap	= FIntVector2(0,0);
-	PlayerBaseTile.bEnemy			= false;
+	PlayerBaseTile.TileOwner		= ETileOwner::Player;
 	CurrentPlayerPos				= PlayerBaseTile;
+	WorldSize						= FIntVector2(10,10);
+	AIBaseTile.PositionInMap		= FIntVector2(FMath::RandRange(2,WorldSize.X - 1), FMath::RandRange(2,WorldSize.Y - 1));
+	AIBaseTile.TileOwner			= ETileOwner::Enemy;
+	CurrentAITile					= AIBaseTile;
 }
 
 void UConquestGameInstance::MapTransition(const FName MapName)
@@ -25,7 +29,8 @@ void UConquestGameInstance::MapTransition(const FName MapName)
 	{
 		//Player stats
 		PlayerTroops = GameModeConquest->ConquestPlayerState->TroopsAmount;
-		
+		PlayerGold = GameModeConquest->ConquestPlayerState->Gold;
+
 		//Important tiles
 		TryToMoveToTile = GameModeConquest->ConquestGameState->TryToMoveToTile;
 		CurrentPlayerPos = GameModeConquest->ConquestGameState->CurrentPlayerTilePos;
@@ -38,11 +43,7 @@ void UConquestGameInstance::MapTransition(const FName MapName)
 			{
 				HexMapData[y].SetNum(GameModeConquest->ConquestGameState->HexMap->Map[y].Num());
 				HexMapData[y][x].PositionInMap = GameModeConquest->ConquestGameState->HexMap->Map[y][x]->Pos;
-				HexMapData[y][x].bEnemy = GameModeConquest->ConquestGameState->HexMap->Map[y][x]->bIsEnemy;
-				if (!HexMapData[y][x].bEnemy)
-				{
-					UE_LOG(LogTemp, Error, TEXT("TILE IS FRIENDLY SAVE"));
-				}
+				HexMapData[y][x].TileOwner = GameModeConquest->ConquestGameState->HexMap->Map[y][x]->TileOwner;
 			}
 		}
 		

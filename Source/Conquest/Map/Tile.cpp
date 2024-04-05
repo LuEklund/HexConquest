@@ -18,13 +18,17 @@ ATile::ATile()
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-	if (bIsEnemy)
+	if (TileOwner == ETileOwner::Enemy)
 	{
 		Tile->SetMaterial(0, EnemyTileMaterial);
 	}
-	else
+	else if (TileOwner == ETileOwner::Player)
 	{
 		Tile->SetMaterial(0, YourTileMaterial);
+	}
+	else if (TileOwner == ETileOwner::Water)
+	{
+		Tile->SetMaterial(0, WaterTileMaterial);
 	}
 }
 
@@ -40,12 +44,16 @@ void ATile::NotifyActorOnClicked(FKey ButtonPressed)
 	Super::NotifyActorOnClicked(ButtonPressed);
 	
 	AConquestGameMode	*GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode());
-	if (bIsEnemy)
+	if (TileOwner == ETileOwner::Enemy)
 	{
 		GameMode->PromptToFight(this);
 	}
 	else
 	{
+		if (TileOwner == ETileOwner::None)
+		{
+			Conqured(true);
+		}
 		GameMode->MovePawnTo(this);
 		GameMode->clearWidget();
 	}
@@ -78,18 +86,57 @@ void ATile::Conqured(bool bWasPlayer)
 	if (bWasPlayer)
 	{
 		Tile->SetMaterial(0, YourTileMaterial);
-		bIsEnemy = false;
+		TileOwner = ETileOwner::Player;
 	}
 	else
 	{
 		Tile->SetMaterial(0, EnemyTileMaterial);
+		TileOwner = ETileOwner::Enemy;
 	}
 }
 
-void ATile::ChangeMaterial()
-{
-	
-	Tile->SetMaterial(1,DefaultOutline);
 
+
+void ATile::ChangeMaterialEdge(int32 material)
+{
+	switch (material)
+	{
+	case 0:
+		Tile->SetMaterial(1,DefaultOutline);
+		break;
+	case 1:
+		Tile->SetMaterial(1,YourTileMaterial);
+		break;
+	case 2:
+		Tile->SetMaterial(1,EnemyTileMaterial);
+		break;
+	case 3:
+		Tile->SetMaterial(1,WaterTileMaterial);
+		break;
+	default:
+		break;
+	}
+
+}
+
+void ATile::ChangeMaterial(int32 mateiral)
+{
+	switch (mateiral)
+	{
+	case 0:
+		Tile->SetMaterial(0,DefaultOutline);
+		break;
+	case 1:
+		Tile->SetMaterial(0,YourTileMaterial);
+		break;
+	case 2:
+		Tile->SetMaterial(0,EnemyTileMaterial);
+		break;
+	case 3:
+		Tile->SetMaterial(0,WaterTileMaterial);
+		break;
+	default:
+		break;
+	}
 }
 

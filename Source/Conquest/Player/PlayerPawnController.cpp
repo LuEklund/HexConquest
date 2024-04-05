@@ -44,3 +44,19 @@ void APlayerPawnController::PromptToFight()
 	PromptWidget->AddToViewport();
 }
 
+void APlayerPawnController::TogglePlayerTurn(bool bCanPlay)
+{
+	if (bCanPlay)
+	{
+		bShowMouseCursor = true;
+		bEnableMouseOverEvents = true;
+		bEnableClickEvents = true;
+	}
+	else
+	{
+		bShowMouseCursor = false;
+		bEnableMouseOverEvents = false;
+		bEnableClickEvents = false;
+	}
+}
+

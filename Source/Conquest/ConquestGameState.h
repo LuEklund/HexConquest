@@ -17,8 +17,9 @@ class CONQUEST_API AConquestGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 public:
-	void		SetupHexMap(const TArray<TArray<struct FTileData>> &HexMapData);
+	void		SetupHexMap(const TArray<TArray<struct FTileData>> &HexMapData, FIntVector2	&WorldSize);
 	AActor		*CreatePawn(const FVector& Vector);
+	AActor		*CreateAIPawn(const FVector& Vector);
 	void		MovePawnTo(const FVector& Vector);
 	ATile*		GetTile(const FIntVector2& Pos);
 
@@ -33,10 +34,14 @@ public:
 	TSubclassOf<class APawnBase>	PawnBluePrintClass;
 	UPROPERTY()
 	class APawnBase	*PlayerPawn;
+	UPROPERTY()
+	class APawnBase				*AIPawn;
 
 	UPROPERTY()
 	FTileData	TryToMoveToTile;
 
 	UPROPERTY()
 	FTileData	CurrentPlayerTilePos;
+
+	bool		PlayerTurn = true;
 };

@@ -6,6 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
+UENUM()
+enum ETileOwner : int8
+{
+	None,
+	Player,
+	Enemy,
+	Water,
+};
 UCLASS()
 class CONQUEST_API ATile : public AActor
 {
@@ -22,9 +30,11 @@ public:
 	virtual void NotifyActorEndCursorOver() override;
 
 	void	Conqured(bool bWasPlayer);
-	void	ChangeMaterial();
+	void	ChangeMaterialEdge(int32 mateiral);
+	void	ChangeMaterial(int32 mateiral);
 
-	bool		bIsEnemy = true;
+	ETileOwner	TileOwner = ETileOwner::None;
+	bool		bIsWater = false;
 	FIntVector2	Pos;
 	
 	UPROPERTY(EditAnywhere, Category="Base")
@@ -32,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
 	UMaterialInterface	*FreeTileMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
+	UMaterialInterface	*WaterTileMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Material")
 	UMaterialInterface	*YourTileMaterial;

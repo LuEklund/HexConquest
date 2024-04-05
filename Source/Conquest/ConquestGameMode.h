@@ -16,6 +16,7 @@ class CONQUEST_API AConquestGameMode : public AGameModeBase
 public:
 	void	MovePawnTo(class ATile *HexTile);
 	void	WonBattle(bool bVictory);
+	void	AITurn();
 	
 	UFUNCTION(BlueprintCallable, Category="Conflict")
 	void	HandleConflict(bool bFight);
@@ -32,6 +33,7 @@ public:
 	class AConquestPlayerState *ConquestPlayerState;
 	UPROPERTY()
 	class APlayerPawnController	*Controller;
+	
 
 
 protected:

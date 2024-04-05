@@ -5,7 +5,7 @@
 #include "Tile.h"
 #include "../ConquestGameInstance.h"
 
-void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
+void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData, FIntVector2	&WorldSize)
 {
 
 	if (!TileBluePrintClass)
@@ -21,10 +21,10 @@ void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
 	float	TileWidth = Max.X - Min.X;
 
 	//Start creating tiles
-	Map.SetNum(10);
+	Map.SetNum(WorldSize.Y);
 	for (int32 y = 0; y < Map.Num(); ++y)
 	{
-		Map[y].SetNum(5);
+		Map[y].SetNum(WorldSize.X);
 		for (int32 x = 0; x < Map[y].Num(); ++x)
 		{
 			FVector	Loc(0.f,0.f,5.f);
@@ -39,9 +39,20 @@ void UHexMap::InitMap(const TArray<TArray<FTileData>> &HexMapData)
 				Loc.Y = y * 0.82f * TileWidth;
 			}
 			ATile* TileActor = Cast<ATile>(GetWorld()->SpawnActor<ATile>(TileBluePrintClass, Loc, FRotator::ZeroRotator));
-			if(HexMapData.Num() && !HexMapData[y][x].bEnemy)
+			if(HexMapData.Num())
 			{
-				TileActor->Conqured(true);
+				if(HexMapData[y][x].TileOwner == ETileOwner::Player)
+				{
+					TileActor->Conqured(true);
+				}
+			}
+			else
+			{
+				if (FMath::RandRange(0,1))
+				{
+					TileActor->TileOwner = ETileOwner::Water;
+					TileActor->ChangeMaterial(3);
+				}
 			}
 			TileActor->Pos.Y = y;
 			TileActor->Pos.X = x;

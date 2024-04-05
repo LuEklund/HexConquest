@@ -21,14 +21,14 @@ ATile	*AConquestGameState::GetTile(const FIntVector2	&Pos)
 	}
 }
 
-void AConquestGameState::SetupHexMap(const TArray<TArray<FTileData>> &HexMapData)
+void AConquestGameState::SetupHexMap(const TArray<TArray<FTileData>> &HexMapData, FIntVector2	&WorldSize)
 {
 	if (ClassHexMap)
 	{
 		HexMap = NewObject<UHexMap>(this, ClassHexMap);
 		if (HexMap)
 		{
-			HexMap->InitMap(HexMapData);
+			HexMap->InitMap(HexMapData, WorldSize);
 		}
 		else
 		{
@@ -61,6 +61,24 @@ AActor *AConquestGameState::CreatePawn(const FVector& Vector)
 		UE_LOG(LogTemp, Error, TEXT("AConquestGameState: PawnBluePrintClass"));
 	}
 	PlayerPawn = Cast<APawnBase>(test);
+	return (PlayerPawn);
+}
+
+AActor *AConquestGameState::CreateAIPawn(const FVector& Vector)
+{
+	if (!PawnBluePrintClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("========================================\nNo BP Tile class in AConquestGameState\n========================================================="));
+		return (nullptr);
+	}
+	FVector	Loc(0.f, 0.f, 200.f);
+	AActor *test = GetWorld()->SpawnActor<APawnBase>(PawnBluePrintClass, Loc, FRotator::ZeroRotator);
+	if (!test)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AConquestGameState: PawnBluePrintClass"));
+	}
+	AIPawn = Cast<APawnBase>(test);
+	AIPawn->SetActorLocation(Vector);
 	return (PlayerPawn);
 }
 

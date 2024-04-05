@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Map/Tile.h"
 #include "ConquestGameInstance.generated.h"
 
 /**
@@ -20,7 +21,7 @@ struct FTileData
 	FIntVector2	PositionInMap;
 	
 	UPROPERTY()
-	bool		bEnemy;
+	TEnumAsByte<ETileOwner> TileOwner;
 };
 
 UCLASS()
@@ -36,9 +37,14 @@ public:
 	FTileData					TryToMoveToTile;
 	FTileData					CurrentPlayerPos;
 	FTileData					PlayerBaseTile;
+	FTileData					AIBaseTile;
+	FTileData					CurrentAITile;
 	bool						bWon = false;
 
 	int8	PlayerTroops = 0;
+	int32	PlayerGold = 0;
+
+	FIntVector2					WorldSize;
 
 	void	MapTransition(const FName MapName);
 };
