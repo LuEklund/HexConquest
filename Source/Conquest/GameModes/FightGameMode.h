@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 
-#include "Fighting/BaseSoldier.h"
+#include "../Fighting/BaseSoldier.h"
 #include "FightGameMode.generated.h"
 
 /**

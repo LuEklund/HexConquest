@@ -9,7 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Conquest/ConquestGameInstance.h"
-#include "Conquest/FightGameMode.h"
+#include "../GameModes/FightGameMode.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 

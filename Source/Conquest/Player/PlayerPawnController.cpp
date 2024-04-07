@@ -2,7 +2,12 @@
 
 
 #include "PlayerPawnController.h"
+
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
+#include "Conquest/GameModes/ConquestGameMode.h"
+#include "Conquest/Pawns/PawnBase.h"
 
 
 void APlayerPawnController::BeginPlay()
@@ -26,7 +31,7 @@ void APlayerPawnController::BeginPlay()
 
 
 
-void APlayerPawnController::PromptToFight()
+void APlayerPawnController::PromptTile()
 {
 	if (!WidgetClass)
 	{
@@ -59,4 +64,71 @@ void APlayerPawnController::TogglePlayerTurn(bool bCanPlay)
 		bEnableClickEvents = false;
 	}
 }
+
+
+void APlayerPawnController::PossesPawn(APawnBase *PawnToPosses)
+{
+	if (!PawnToPosses)
+	{
+		UE_LOG(LogTemp, Display, TEXT("NO pawn to posses"));
+
+		return ;
+	}
+	Possess(PawnToPosses);
+	if(UEnhancedInputLocalPlayerSubsystem *Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(InputMappingContext, 0);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("UEnhancedInputLocalPlayerSubsystem: FALIED"));
+	}
+	if (UEnhancedInputComponent *Input = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		Input->BindAction(InputMove, ETriggerEvent::Triggered, this, &APlayerPawnController::EnhancedInputMove);
+		Input->BindAction(InputZoom, ETriggerEvent::Triggered, this, &APlayerPawnController::EnhancedInputZoom);
+		Input->BindAction(InputPlayerSwap, ETriggerEvent::Triggered, this, &APlayerPawnController::EnhancedInputPlayerSwap);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("UEnhancedInputComponent: FALIED"));
+	}
+}
+
+
+void APlayerPawnController::EnhancedInputZoom(const FInputActionValue& value)
+{
+	if (APawnBase *ControlledPawn = GetPawn<APawnBase>())
+	{
+		ControlledPawn->AddInputZoom(value.Get<float>());
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("APlayerPawnController::EnhancedInputZoom: NO Pawn controlled"));
+	}
+		
+}
+
+void APlayerPawnController::EnhancedInputMove(const FInputActionValue& value)
+{
+	//Gets input values
+	FVector2d MovementVector = value.Get<FVector2d>();
+
+	if (APawnBase *ControlledPawn = GetPawn<APawnBase>())
+	{
+		ControlledPawn->Move( value.Get<FVector2d>());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("APlayerPawnController::EnhancedInputMove: NO MOVE"));
+	}
+
+}
+
+void APlayerPawnController::EnhancedInputPlayerSwap(const FInputActionValue& value)
+{
+	GetWorld()->GetAuthGameMode<AConquestGameMode>()->SwapPlayer(value.Get<float>());
+}
+
 

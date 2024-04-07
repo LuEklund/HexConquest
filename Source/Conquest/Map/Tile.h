@@ -6,14 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
-UENUM()
-enum ETileOwner : int8
-{
-	None,
-	Player,
-	Enemy,
-	Water,
-};
+// UENUM()
+// enum ETileOwner : int8
+// {
+// 	None,
+// 	Player,
+// 	Enemy,
+// 	Water,
+// };
 UCLASS()
 class CONQUEST_API ATile : public AActor
 {
@@ -29,13 +29,13 @@ public:
 	virtual void NotifyActorBeginCursorOver() override;
 	virtual void NotifyActorEndCursorOver() override;
 
-	void	Conqured(bool bWasPlayer);
+	void	Conqured(class APawnBase *Conquerer);
 	void	ChangeMaterialEdge(int32 mateiral);
 	void	ChangeMaterial(int32 mateiral);
 
-	ETileOwner	TileOwner = ETileOwner::None;
-	bool		bIsWater = false;
-	FIntVector2	Pos;
+	class APawnBase	*TileOwner = nullptr;
+	bool			bIsWater = false;
+	FIntVector2		Pos;
 	
 	UPROPERTY(EditAnywhere, Category="Base")
 	UStaticMeshComponent	*Tile;

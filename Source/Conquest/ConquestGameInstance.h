@@ -12,18 +12,6 @@
  */
 
 
-USTRUCT(Blueprintable)
-struct FTileData
-{
-	GENERATED_BODY()
-
-	UPROPERTY()
-	FIntVector2	PositionInMap;
-	
-	UPROPERTY()
-	TEnumAsByte<ETileOwner> TileOwner;
-};
-
 UCLASS()
 class CONQUEST_API UConquestGameInstance : public UGameInstance
 {
@@ -32,19 +20,29 @@ class CONQUEST_API UConquestGameInstance : public UGameInstance
 public:
 
 	UConquestGameInstance();
+
+	class UHexMap	*GetHexMap();
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Map")
+	TSubclassOf<class UHexMap>	HexMapBlueprint;
+	UPROPERTY()
+	class UHexMap	*HexMap;
+
+	int32	PlayerAmount = 3;
 	
-	TArray<TArray<FTileData>>	HexMapData;
-	FTileData					TryToMoveToTile;
-	FTileData					CurrentPlayerPos;
-	FTileData					PlayerBaseTile;
-	FTileData					AIBaseTile;
-	FTileData					CurrentAITile;
-	bool						bWon = false;
+	// FTileData					TryToMoveToTile;
+	// FTileData					CurrentPlayerPos;
+	// FTileData					PlayerBaseTile;
+	// FTileData					AIBaseTile;
+	// FTileData					CurrentAITile;
+	// bool						bWon = false;
 
 	int8	PlayerTroops = 0;
 	int32	PlayerGold = 0;
 
-	FIntVector2					WorldSize;
-
+	void LoadHexMap();
+	void SaveHexMap();
 	void	MapTransition(const FName MapName);
 };

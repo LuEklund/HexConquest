@@ -3,7 +3,7 @@
 
 #include "HealthComponent.h"
 
-#include "Conquest/FightGameMode.h"
+#include "../GameModes/FightGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties

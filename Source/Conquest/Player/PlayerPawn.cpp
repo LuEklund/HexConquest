@@ -50,52 +50,5 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if(APlayerController *PlayerController =  Cast<APlayerController>(Controller))
-	{
-		if(UEnhancedInputLocalPlayerSubsystem *Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-	
-			Subsystem->AddMappingContext(InputMappingContext, 0);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Display, TEXT("UEnhancedInputLocalPlayerSubsystem: FALIED"));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("APlayerController: FALIED"));
-	}
-	if (UEnhancedInputComponent *Input = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		Input->BindAction(InputMove, ETriggerEvent::Triggered, this, &APlayerPawn::EnhancedInputMove);
-		Input->BindAction(InputZoom, ETriggerEvent::Triggered, this, &APlayerPawn::EnhancedInputZoom);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("UEnhancedInputComponent: FALIED"));
-
-	}
-
 }
-
-
-void APlayerPawn::EnhancedInputZoom(const FInputActionValue& value)
-{
-	float zoom = value.Get<float>();
-	float newDistance = FMath::Clamp(SpringArm->TargetArmLength - zoom * 10.f, 0.f, 1750.f);
-	SpringArm->TargetArmLength = newDistance;
-}
-
-void APlayerPawn::EnhancedInputMove(const FInputActionValue& value)
-{
-	//Gets input values
-	FVector2d moveVector = value.Get<FVector2d>();
-
-	//create our delta position to add
-	float	dt = UGameplayStatics::GetWorldDeltaSeconds(this->GetWorld());
-	FVector	DeltaPos(moveVector.X * dt * Speed, moveVector.Y * dt * Speed, 0);
-	AddActorLocalOffset(DeltaPos, true);
-}
-
 

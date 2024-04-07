@@ -35,26 +35,9 @@ public:
 
 
 
-	//============[Enhanced Input]======================================
 
-	void	EnhancedInputZoom(const struct FInputActionValue& value);
-	
-	void	EnhancedInputMove(const struct FInputActionValue& value);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//The mapping context
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
-	class UInputMappingContext *InputMappingContext;
-
-	//Zoom
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
-	class UInputAction *InputZoom;
-
-	//Movement
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
-	class UInputAction *InputMove;
-
-	//===================================================================
 
 protected:
 	// Called when the game starts or when spawned

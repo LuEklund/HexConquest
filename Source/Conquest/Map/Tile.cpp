@@ -2,7 +2,8 @@
 
 
 #include "Tile.h"
-#include "../ConquestGameMode.h"
+#include "../GameModes/ConquestGameMode.h"
+#include "Conquest/Pawns/PawnBase.h"
 
 // Sets default values
 ATile::ATile()
@@ -18,18 +19,6 @@ ATile::ATile()
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-	if (TileOwner == ETileOwner::Enemy)
-	{
-		Tile->SetMaterial(0, EnemyTileMaterial);
-	}
-	else if (TileOwner == ETileOwner::Player)
-	{
-		Tile->SetMaterial(0, YourTileMaterial);
-	}
-	else if (TileOwner == ETileOwner::Water)
-	{
-		Tile->SetMaterial(0, WaterTileMaterial);
-	}
 }
 
 // Called every frame
@@ -44,19 +33,20 @@ void ATile::NotifyActorOnClicked(FKey ButtonPressed)
 	Super::NotifyActorOnClicked(ButtonPressed);
 	
 	AConquestGameMode	*GameMode = Cast<AConquestGameMode>(GetWorld()->GetAuthGameMode());
-	if (TileOwner == ETileOwner::Enemy)
-	{
-		GameMode->PromptToFight(this);
-	}
-	else
-	{
-		if (TileOwner == ETileOwner::None)
-		{
-			Conqured(true);
-		}
-		GameMode->MovePawnTo(this);
-		GameMode->clearWidget();
-	}
+	GameMode->PromptTile(this);
+	// if (TileOwner == ETileOwner::Enemy)
+	// {
+	// 	GameMode->PromptToFight(this);
+	// }
+	// else
+	// {
+	// 	if (TileOwner == ETileOwner::None)
+	// 	{
+	// 		Conqured(true);
+	// 	}
+	// 	GameMode->MovePawnTo(this);
+	// 	GameMode->clearWidget();
+	// }
 	Tile->SetMaterial(1,PressedOutline);
 
 }
@@ -81,18 +71,10 @@ void ATile::NotifyActorEndCursorOver()
 
 }
 
-void ATile::Conqured(bool bWasPlayer)
+void ATile::Conqured(APawnBase *Conquerer)
 {
-	if (bWasPlayer)
-	{
-		Tile->SetMaterial(0, YourTileMaterial);
-		TileOwner = ETileOwner::Player;
-	}
-	else
-	{
-		Tile->SetMaterial(0, EnemyTileMaterial);
-		TileOwner = ETileOwner::Enemy;
-	}
+	Tile->SetMaterial(0, Conquerer->ConquerColor);
+	TileOwner = Conquerer;
 }
 
 

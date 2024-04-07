@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/GameModeBase.h"
 #include "ConquestGameMode.generated.h"
 
@@ -21,10 +22,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Conflict")
 	void	HandleConflict(bool bFight);
 
-	void PromptToFight(class ATile *HexTile);
+	void PromptTile(class ATile *HexTile);
 	void clearWidget();
+	void SwapPlayer(float Swap);
 
-	
+
 	UPROPERTY()
 	class UConquestGameInstance *GameInstance;
 	UPROPERTY()
@@ -33,6 +35,8 @@ public:
 	class AConquestPlayerState *ConquestPlayerState;
 	UPROPERTY()
 	class APlayerPawnController	*Controller;
+	UPROPERTY()
+	class UHexMap	*HexMap;
 	
 
 

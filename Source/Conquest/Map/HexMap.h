@@ -15,11 +15,20 @@ class CONQUEST_API UHexMap : public UObject
 {
 	GENERATED_BODY()
 public:
-	void	InitMap(const TArray<TArray<struct FTileData>> &HexMapData, FIntVector2	&WorldSize);
+	void		InitMap(int32 Y, int32 X);
+	void		SummonPawns(int32 Amount);
+	virtual void BeginDestroy() override;
+	// void		MovePawnTo(const FVector& Vector);
+	// ATile*		GetTile(const FIntVector2& Pos);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tile")
 	TSubclassOf<ATile>	TileBluePrintClass;
 
+	UPROPERTY(EditAnywhere, Category="Pawn")
+	TSubclassOf<class APawnBase>	PawnBluePrint;
 
-	TArray<TArray<class ATile *>> Map;
+	// UPROPERTY()
+	TArray<TStrongObjectPtr<class APawnBase>>		PlayerPawns;
+
+	TArray<TArray<class ATile *>>	Map;
 };

@@ -16,8 +16,9 @@ class CONQUEST_API APlayerPawnController : public APlayerController
 
 public:
 	virtual void BeginPlay() override;
-	void PromptToFight();
+	void PromptTile();
 	void TogglePlayerTurn(bool bCanPlay);
+	void PossesPawn(class APawnBase *PawnToPosses);
 
 
 	UPROPERTY(EditAnywhere, Category="Widget")
@@ -31,5 +32,31 @@ public:
 
 	UPROPERTY()
 	UUserWidget	*HUDWidget;
+
+
+
+	//============[Enhanced Input]======================================
+
+	void	EnhancedInputZoom(const struct FInputActionValue& value);
+	void	EnhancedInputMove(const struct FInputActionValue& value);
+	void	EnhancedInputPlayerSwap(const struct FInputActionValue& value);
+	
+	//The mapping context
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
+	class UInputMappingContext *InputMappingContext;
+
+	//Zoom
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
+	class UInputAction *InputZoom;
+
+	//Movement
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
+	class UInputAction *InputMove;
+
+	//Player swap
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input")
+	class UInputAction *InputPlayerSwap;
+
+	//===================================================================
 
 };

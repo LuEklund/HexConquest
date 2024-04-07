@@ -3,10 +3,9 @@
 
 #include "FightGameMode.h"
 
-#include "ConquestGameInstance.h"
-#include "Algo/RemoveIf.h"
-#include "Player/FightPlayerController.h"
-#include "State/FightGameState.h"
+#include "../ConquestGameInstance.h"
+#include "../Player/FightPlayerController.h"
+#include "../State/FightGameState.h"
 
 void AFightGameMode::BeginPlay()
 {
